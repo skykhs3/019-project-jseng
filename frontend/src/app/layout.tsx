@@ -38,7 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${pretendard.variable} scroll-smooth`}>
+    <html
+      lang="ko"
+      className={`${pretendard.variable} scroll-smooth`}
+      data-scroll-behavior="smooth"
+    >
       <head>
         <link
           rel="apple-touch-icon"
@@ -76,7 +80,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`bg-white font-sans text-secondary-900 dark:bg-secondary-950 dark:text-secondary-100`}
+        className={`text-secondary-900 dark:bg-secondary-950 dark:text-secondary-100 bg-white font-sans`}
       >
         <ThemeProvider>{children}</ThemeProvider>
       </body>

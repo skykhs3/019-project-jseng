@@ -4,23 +4,45 @@ import React, { useCallback, useState, useEffect } from "react";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 
+type NaverCoordinates = object;
+
+type NaverMap = {
+  setZoom: (zoom: number) => void;
+  panTo: (coordinates: NaverCoordinates) => void;
+};
+
+type NaverMapsApi = {
+  LatLng: new (latitude: number, longitude: number) => NaverCoordinates;
+  Map: new (element: string, options: Record<string, unknown>) => NaverMap;
+  Marker: new (options: Record<string, unknown>) => object;
+  Point: new (x: number, y: number) => object;
+  Size: new (width: number, height: number) => object;
+  Position: { TOP_RIGHT: unknown };
+};
+
+declare global {
+  interface Window {
+    naver: { maps: NaverMapsApi };
+  }
+}
+
 const Location: React.FC = () => {
-  const [naverMap, setNaverMap] = useState(null);
-  const [companyLoc, setCompanyLoc] = useState(null);
+  const [naverMap, setNaverMap] = useState<NaverMap | null>(null);
+  const [companyLoc, setCompanyLoc] = useState<NaverCoordinates | null>(null);
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.05,
     rootMargin: "0px 0px -50px 0px",
   });
 
-  const initNaverMap = useCallback(async () => {
+  const initNaverMap = useCallback(() => {
     const script = document.createElement("script");
     script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_SERVICE_CLIENT_ID}`;
     script.async = true;
     document.head.appendChild(script);
 
     script.onload = () => {
-      const zoomCenterLoc = new (window as any).naver.maps.LatLng(
+      const zoomCenterLoc = new window.naver.maps.LatLng(
         37.4940094,
         127.014925,
       );
@@ -32,17 +54,14 @@ const Location: React.FC = () => {
         zoomControl: true,
         scaleControl: true,
         zoomControlOptions: {
-          position: (window as any).naver.maps.Position.TOP_RIGHT,
+          position: window.naver.maps.Position.TOP_RIGHT,
         },
       };
 
-      const map = new (window as any).naver.maps.Map("naver-map", mapOptions);
-      const position = new (window as any).naver.maps.LatLng(
-        37.494894,
-        127.014925,
-      );
+      const map = new window.naver.maps.Map("naver-map", mapOptions);
+      const position = new window.naver.maps.LatLng(37.494894, 127.014925);
 
-      new (window as any).naver.maps.Marker({
+      new window.naver.maps.Marker({
         position: position,
         map: map,
         icon: {
@@ -51,19 +70,19 @@ const Location: React.FC = () => {
             "(주) 정석기술연구소",
             "</div>",
           ].join(""),
-          origin: new (window as any).naver.maps.Point(0, 0),
-          anchor: new (window as any).naver.maps.Point(80, 0),
+          origin: new window.naver.maps.Point(0, 0),
+          anchor: new window.naver.maps.Point(80, 0),
         },
       });
 
-      new (window as any).naver.maps.Marker({
+      new window.naver.maps.Marker({
         position: position,
         map: map,
         icon: {
           url: "/icon_company_marker.png",
-          size: new (window as any).naver.maps.Size(22, 35),
-          origin: new (window as any).naver.maps.Point(0, 0),
-          anchor: new (window as any).naver.maps.Point(11, 35),
+          size: new window.naver.maps.Size(22, 35),
+          origin: new window.naver.maps.Point(0, 0),
+          anchor: new window.naver.maps.Point(11, 35),
         },
       });
 
@@ -74,8 +93,8 @@ const Location: React.FC = () => {
 
   const setMapToOriginPosition = useCallback(() => {
     if (naverMap && companyLoc) {
-      (naverMap as any).setZoom(17);
-      (naverMap as any).panTo(companyLoc);
+      naverMap.setZoom(17);
+      naverMap.panTo(companyLoc);
     } else {
       console.log("naverMap 또는 companyLoc가 초기화되지 않았습니다.");
     }
@@ -109,17 +128,17 @@ const Location: React.FC = () => {
         className={`${inView ? "animate-fadeInUp" : "opacity-0"}`}
         ref={ref}
       >
-        <h2 className="heading-lg mb-6 text-primary-800 dark:text-primary-400">
+        <h2 className="heading-lg text-primary-800 dark:text-primary-400 mb-6">
           찾아오시는 길
         </h2>
 
         <div className="grid gap-8 lg:grid-cols-2">
           {/* 지도 섹션 */}
-          <div className="order-2 min-h-[350px] overflow-hidden rounded-lg shadow-lg dark:shadow-secondary-900 lg:order-1">
+          <div className="dark:shadow-secondary-900 order-2 min-h-[350px] overflow-hidden rounded-lg shadow-lg lg:order-1">
             <div className="relative h-[350px] w-full md:h-full">
               <div id="naver-map" className="z-0 h-full w-full bg-white"></div>
               <button
-                className="absolute right-[52px] top-[11px] z-10 flex h-[30px] w-[30px] items-center justify-center rounded-md border border-secondary-200 bg-white shadow-sm transition-all hover:bg-secondary-50"
+                className="border-secondary-200 hover:bg-secondary-50 absolute top-[11px] right-[52px] z-10 flex h-[30px] w-[30px] items-center justify-center rounded-md border bg-white shadow-sm transition-all"
                 onClick={setMapToOriginPosition}
                 aria-label="지도 위치 초기화"
               >
@@ -161,11 +180,11 @@ const Location: React.FC = () => {
           {/* 주소 및 교통 정보 섹션 */}
           <div className="order-1 flex flex-col space-y-6 lg:order-2">
             {/* 주소 카드 */}
-            <div className="rounded-lg border border-secondary-200 bg-white p-6 shadow-md dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-secondary-900">
+            <div className="border-secondary-200 dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-secondary-900 rounded-lg border bg-white p-6 shadow-md">
               <div className="mb-4 flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="mr-3 h-8 w-8 text-primary-600 dark:text-primary-400"
+                  className="text-primary-600 dark:text-primary-400 mr-3 h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -183,18 +202,18 @@ const Location: React.FC = () => {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <h3 className="text-xl font-bold text-primary-700 dark:text-primary-400">
+                <h3 className="text-primary-700 dark:text-primary-400 text-xl font-bold">
                   회사 주소
                 </h3>
               </div>
-              <p className="text-lg text-secondary-700 dark:text-secondary-300">
+              <p className="text-secondary-700 dark:text-secondary-300 text-lg">
                 서울특별시 서초구 서초중앙로24길 11
                 <br />
                 요셉빌딩 7F (교대역 4번 출구)
               </p>
               <div className="mt-4 flex space-x-3">
                 <button
-                  className="flex items-center justify-center rounded-md bg-secondary-100 px-4 py-2 text-sm font-medium text-secondary-800 transition-colors hover:bg-secondary-200 dark:bg-secondary-800 dark:text-secondary-200 dark:hover:bg-secondary-700"
+                  className="bg-secondary-100 text-secondary-800 hover:bg-secondary-200 dark:bg-secondary-800 dark:text-secondary-200 dark:hover:bg-secondary-700 flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
                   onClick={() => {
                     navigator.clipboard.writeText(
                       "서울특별시 서초구 서초중앙로24길 11 요셉빌딩 7F",
@@ -206,7 +225,7 @@ const Location: React.FC = () => {
                 </button>
                 <a
                   href="tel:02-533-7753"
-                  className="flex items-center justify-center rounded-md bg-primary-100 px-4 py-2 text-sm font-medium text-primary-800 transition-colors hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800"
+                  className="bg-primary-100 text-primary-800 hover:bg-primary-200 dark:bg-primary-900 dark:text-primary-300 dark:hover:bg-primary-800 flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
                 >
                   전화 (02-533-7753)
                 </a>
@@ -214,11 +233,11 @@ const Location: React.FC = () => {
             </div>
 
             {/* 교통편 정보 */}
-            <div className="rounded-lg border border-secondary-200 bg-white p-6 shadow-md dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-secondary-900">
+            <div className="border-secondary-200 dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-secondary-900 rounded-lg border bg-white p-6 shadow-md">
               <div className="mb-4 flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="mr-3 h-8 w-8 text-primary-600 dark:text-primary-400"
+                  className="text-primary-600 dark:text-primary-400 mr-3 h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -230,18 +249,18 @@ const Location: React.FC = () => {
                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
                   />
                 </svg>
-                <h3 className="text-xl font-bold text-primary-700 dark:text-primary-400">
+                <h3 className="text-primary-700 dark:text-primary-400 text-xl font-bold">
                   오시는 방법
                 </h3>
               </div>
               <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
                 {transportationOptions.map((option, index) => (
                   <div key={index} className="flex items-start">
-                    <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-full bg-secondary-100 text-lg font-medium dark:bg-secondary-800">
+                    <span className="bg-secondary-100 dark:bg-secondary-800 mr-3 flex h-8 w-8 items-center justify-center rounded-full text-lg font-medium">
                       {option.icon}
                     </span>
                     <div>
-                      <h4 className="font-bold text-secondary-800 dark:text-secondary-200">
+                      <h4 className="text-secondary-800 dark:text-secondary-200 font-bold">
                         {option.type}
                       </h4>
                       <p className="text-secondary-700 dark:text-secondary-300">
@@ -254,11 +273,11 @@ const Location: React.FC = () => {
             </div>
 
             {/* 영업시간 정보 */}
-            <div className="rounded-lg border border-secondary-200 bg-white p-6 shadow-md dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-secondary-900">
+            <div className="border-secondary-200 dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-secondary-900 rounded-lg border bg-white p-6 shadow-md">
               <div className="mb-4 flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="mr-3 h-8 w-8 text-primary-600 dark:text-primary-400"
+                  className="text-primary-600 dark:text-primary-400 mr-3 h-8 w-8"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -270,12 +289,12 @@ const Location: React.FC = () => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <h3 className="text-xl font-bold text-primary-700 dark:text-primary-400">
+                <h3 className="text-primary-700 dark:text-primary-400 text-xl font-bold">
                   영업시간
                 </h3>
               </div>
-              <div className="flex justify-between border-b border-secondary-100 pb-2 dark:border-secondary-800">
-                <span className="font-medium text-secondary-800 dark:text-secondary-200">
+              <div className="border-secondary-100 dark:border-secondary-800 flex justify-between border-b pb-2">
+                <span className="text-secondary-800 dark:text-secondary-200 font-medium">
                   평일
                 </span>
                 <span className="text-secondary-700 dark:text-secondary-300">
@@ -283,7 +302,7 @@ const Location: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between pt-2">
-                <span className="font-medium text-secondary-800 dark:text-secondary-200">
+                <span className="text-secondary-800 dark:text-secondary-200 font-medium">
                   주말 및 공휴일
                 </span>
                 <span className="text-secondary-700 dark:text-secondary-300">
