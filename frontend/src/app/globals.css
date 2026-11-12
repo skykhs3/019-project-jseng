@@ -1,19 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 /* Base styles */
 @layer base {
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
-    @apply text-secondary-800 antialiased dark:text-secondary-200;
+    @apply text-secondary-800 dark:text-secondary-200 antialiased;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-medium leading-tight dark:text-white;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply leading-tight font-medium dark:text-white;
   }
 }
 
@@ -22,29 +26,29 @@
   .container-custom {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
-  
+
   .section-padding {
     @apply py-12 md:py-16 lg:py-20;
   }
-  
+
   .heading-xl {
     @apply text-3xl font-bold md:text-4xl lg:text-5xl;
   }
-  
+
   .heading-lg {
     @apply text-2xl font-bold md:text-3xl lg:text-4xl;
   }
-  
+
   .heading-md {
     @apply text-xl font-bold md:text-2xl lg:text-3xl;
   }
-  
+
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:bg-primary-700 dark:hover:bg-primary-600 dark:focus:ring-primary-400;
+    @apply bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600 dark:focus:ring-primary-400 inline-flex items-center justify-center rounded-md px-4 py-2 font-medium text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-hidden;
   }
-  
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-md bg-secondary-100 px-4 py-2 font-medium text-secondary-800 transition-colors hover:bg-secondary-200 focus:outline-none focus:ring-2 focus:ring-secondary-300 focus:ring-offset-2 dark:bg-secondary-800 dark:text-secondary-100 dark:hover:bg-secondary-700 dark:focus:ring-secondary-600;
+    @apply bg-secondary-100 text-secondary-800 hover:bg-secondary-200 focus:ring-secondary-300 dark:bg-secondary-800 dark:text-secondary-100 dark:hover:bg-secondary-700 dark:focus:ring-secondary-600 inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-hidden;
   }
 }
 
@@ -124,7 +128,7 @@ html.dark .slick-next:before {
 
 /* CEO Slider specific styles */
 .ceo-slider .slick-dots {
-  bottom: -30px !important; 
+  bottom: -30px !important;
   z-index: 30;
 }
 

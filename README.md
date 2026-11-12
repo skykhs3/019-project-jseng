@@ -7,8 +7,8 @@
 정석기술연구소의 공식 웹사이트로, 회사 소개, 서비스 정보를 제공합니다.
 
 ## 기술 스택
-- **Frontend**: Next.js 15.2.4, React 19.1.0
-- **스타일링**: TailwindCSS 3.4.1
+- **Frontend**: Next.js 16.4.6, React 19.3.1
+- **스타일링**: Tailwind CSS 4.3.5
 - **UI 컴포넌트**: React Slick (캐러셀)
 - **배포**: Fly.io
 - **컨테이너화**: Docker

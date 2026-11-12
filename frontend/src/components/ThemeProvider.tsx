@@ -12,24 +12,24 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    // Check local storage and system preference
-    const storedTheme = localStorage.getItem("theme") as Theme | null;
-    const systemPrefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
+    const animationFrame = window.requestAnimationFrame(() => {
+      const storedTheme = localStorage.getItem("theme") as Theme | null;
+      const systemPrefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
 
-    // Set initial theme
-    if (storedTheme) {
-      setTheme(storedTheme);
-    } else if (systemPrefersDark) {
-      setTheme("dark");
-    }
+      setTheme(storedTheme ?? (systemPrefersDark ? "dark" : "light"));
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
   }, []);
 
   useEffect(() => {
+    if (!theme) return;
+
     // Update document class when theme changes
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -46,7 +46,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme: theme ?? "light", toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
 
@@ -16,19 +16,7 @@ const Header: React.FC = () => {
     { href: "#찾아오시는길", label: "찾아오시는 길" },
   ];
 
-  useEffect(() => {
-    const secondPage = document.getElementById("회사개요");
-    const isScrollPositionReachSecondPageTop = secondPage
-      ? 0 >= secondPage.getBoundingClientRect().top
-      : false;
-    if (isScrollPositionReachSecondPageTop) {
-      setHeaderStyle(
-        "bg-white bg-opacity-95 webkit-backdrop-blur-16px shadow-md",
-      );
-    }
-  }, []);
-
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     const secondPage = document.getElementById("회사개요");
     if (secondPage) {
       const isScrollPositionReachSecondPageTop =
@@ -41,12 +29,16 @@ const Header: React.FC = () => {
         setHeaderStyle("bg-black bg-opacity-30 webkit-backdrop-blur-16px");
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
+    const animationFrame = window.requestAnimationFrame(handleScroll);
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   const toggleMobileMenu = () => {
     if (!isMobileMenuOpen) {
@@ -55,8 +47,7 @@ const Header: React.FC = () => {
     if (isMobileMenuOpen) {
       const secondPage = document.getElementById("회사개요");
       if (secondPage) {
-        const isScrollPositionTop = 0 == window.scrollY;
-        console.log(window.scrollY);
+        const isScrollPositionTop = window.scrollY === 0;
         if (isScrollPositionTop) {
           setHeaderStyle("");
         }
@@ -99,13 +90,13 @@ const Header: React.FC = () => {
             />
             <div>
               <h1
-                className={`${logoTextClass} text-xl font-bold leading-tight tracking-wider lg:text-2xl dark:text-white`}
+                className={`${logoTextClass} text-xl leading-tight font-bold tracking-wider lg:text-2xl dark:text-white`}
                 style={logoTextShadow}
               >
                 (주)정석기술연구소
               </h1>
               <p
-                className={`${subtitleClass} text-xs font-medium lg:text-sm dark:text-secondary-300`}
+                className={`${subtitleClass} dark:text-secondary-300 text-xs font-medium lg:text-sm`}
               >
                 Construction technology support
               </p>
@@ -120,7 +111,7 @@ const Header: React.FC = () => {
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className={`${navLinkClass} font-medium transition dark:text-secondary-200 dark:hover:text-primary-300`}
+                      className={`${navLinkClass} dark:text-secondary-200 dark:hover:text-primary-300 font-medium transition`}
                       onClick={(e) => {
                         e.preventDefault();
                         const element = document.getElementById(
@@ -152,10 +143,7 @@ const Header: React.FC = () => {
                 dark:text-secondary-200`}
             />
             <button
-              className={`
-                ${headerStyle.includes("bg-white") ? "text-secondary-800" : "text-white"}
-                dark:text-secondary-200
-              `}
+              className={` ${headerStyle.includes("bg-white") ? "text-secondary-800" : "text-white"} dark:text-secondary-200`}
               onClick={toggleMobileMenu}
               aria-label="Toggle menu"
             >
@@ -206,7 +194,7 @@ const Header: React.FC = () => {
                       className={`block px-4 py-2 font-medium transition ${
                         headerStyle.includes("bg-white")
                           ? "text-secondary-700 hover:bg-secondary-50 hover:text-primary-600"
-                          : "text-white hover:bg-black hover:bg-opacity-50 hover:text-primary-300"
+                          : "hover:bg-opacity-50 hover:text-primary-300 text-white hover:bg-black"
                       }`}
                       onClick={(e) => {
                         e.preventDefault();

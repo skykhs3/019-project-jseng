@@ -48,13 +48,13 @@ const CompanyIntroduction: React.FC = () => {
       >
         {/* Company Introduction Content */}
         <div className="order-1">
-          <h2 className="heading-lg mb-6 text-primary-800 dark:text-primary-400">
+          <h2 className="heading-lg text-primary-800 dark:text-primary-400 mb-6">
             회사 개요
           </h2>
 
-          <div className="space-y-6 text-secondary-700 dark:text-secondary-300">
+          <div className="text-secondary-700 dark:text-secondary-300 space-y-6">
             <p className="text-lg leading-relaxed">
-              <span className="font-semibold text-primary-700 dark:text-primary-400">
+              <span className="text-primary-700 dark:text-primary-400 font-semibold">
                 정석기술연구소
               </span>
               는 건설하자, 건설분쟁, 법원감정 대응을 전문으로 수행하는
@@ -62,22 +62,21 @@ const CompanyIntroduction: React.FC = () => {
             </p>
 
             <p className="text-lg leading-relaxed">
-              당사는 건설시공기술사 및 건축설계시공기술사를 보유하고 있으며,
-              전 직원이 건설현장 실무 경력을 갖춘 기술전문가로 구성되어
-              있습니다.
+              당사는 건설시공기술사 및 건축설계시공기술사를 보유하고 있으며, 전
+              직원이 건설현장 실무 경력을 갖춘 기술전문가로 구성되어 있습니다.
             </p>
 
             <p className="text-lg leading-relaxed">
               현장 경험과 기술사 자격을 기반으로{" "}
-              <span className="font-semibold text-primary-700 dark:text-primary-400">
+              <span className="text-primary-700 dark:text-primary-400 font-semibold">
                 기술송무(Technical Litigation Support)
-              </span>
-              {" "}및 감정 대응 중심의 기술 분석을 수행합니다.
+              </span>{" "}
+              및 감정 대응 중심의 기술 분석을 수행합니다.
             </p>
 
             <p className="text-lg leading-relaxed">
               이론 중심 자문이 아닌,{" "}
-              <span className="font-semibold text-primary-700 dark:text-primary-400">
+              <span className="text-primary-700 dark:text-primary-400 font-semibold">
                 설계·시공·감리·현장관리 실무 경험
               </span>
               에 기반한 실질적 기술검토를 제공합니다.
@@ -91,7 +90,7 @@ const CompanyIntroduction: React.FC = () => {
 
         {/* Company Image */}
         <div className="order-2 flex items-center justify-center md:justify-end">
-          <div className="relative h-[300px] w-full max-w-[500px] overflow-hidden rounded-xl shadow-xl dark:shadow-secondary-900 md:h-[400px]">
+          <div className="dark:shadow-secondary-900 relative h-[300px] w-full max-w-[500px] overflow-hidden rounded-xl shadow-xl md:h-[400px]">
             <Image
               src="/image_people.jpg"
               alt="정석기술연구소 이미지"
@@ -110,12 +109,12 @@ const CompanyIntroduction: React.FC = () => {
         {stats.map((stat, index) => (
           <div
             key={index}
-            className={`flex flex-col items-center rounded-lg ${stat.color} p-6 text-center shadow-md transition-transform hover:-translate-y-1 dark:shadow-secondary-900`}
+            className={`flex flex-col items-center rounded-lg ${stat.color} dark:shadow-secondary-900 p-6 text-center shadow-md transition-transform hover:-translate-y-1`}
           >
-            <span className="text-4xl font-bold text-primary-700 dark:text-primary-400">
+            <span className="text-primary-700 dark:text-primary-400 text-4xl font-bold">
               {stat.number}
             </span>
-            <span className="mt-2 text-lg font-medium text-secondary-700 dark:text-secondary-300">
+            <span className="text-secondary-700 dark:text-secondary-300 mt-2 text-lg font-medium">
               {stat.label}
             </span>
           </div>

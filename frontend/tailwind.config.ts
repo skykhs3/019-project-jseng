@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import type { PluginAPI } from "tailwindcss/plugin";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -124,7 +125,7 @@ const config: Config = {
     },
   },
   plugins: [
-    function ({ addUtilities }: { addUtilities: any }) {
+    function ({ addUtilities }: PluginAPI) {
       const newUtilities = {
         ".webkit-backdrop-blur-16px": {
           "-webkit-backdrop-filter": "blur(16px)",
@@ -135,7 +136,7 @@ const config: Config = {
       addUtilities(newUtilities, ["responsive", "hover"]);
     },
 
-    function ({ addUtilities }: { addUtilities: any }) {
+    function ({ addUtilities }: PluginAPI) {
       const delayUtilities = {
         ".animate-delay-300ms": {
           "animation-delay": "300ms",
@@ -165,7 +166,7 @@ const config: Config = {
 
       addUtilities(delayUtilities, ["responsive", "hover"]);
     },
-    function ({ addUtilities }: { addUtilities: any }) {
+    function ({ addUtilities }: PluginAPI) {
       const newUtilities = {
         ".translate-z-0": {
           transform: "translateZ(0)",

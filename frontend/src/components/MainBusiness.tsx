@@ -61,7 +61,7 @@ const MainBusiness: React.FC = () => {
         className={`opacity-0 ${inView ? "animate-fadeInUp animate-delay-300ms" : ""}`}
         ref={ref}
       >
-        <h2 className="heading-lg mb-8 text-primary-800 dark:text-primary-400">
+        <h2 className="heading-lg text-primary-800 dark:text-primary-400 mb-8">
           주요 수행 분야
         </h2>
 
@@ -69,17 +69,17 @@ const MainBusiness: React.FC = () => {
           {업무내용.map((item, index) => (
             <div
               key={index}
-              className={`flex flex-col rounded-lg border border-secondary-200 bg-white p-6 shadow-md transition-all hover:shadow-lg dark:border-secondary-800 dark:bg-secondary-900 dark:shadow-lg ${
-                inView ? `animate-fadeInUp ` : "opacity-0"
+              className={`border-secondary-200 dark:border-secondary-800 dark:bg-secondary-900 flex flex-col rounded-lg border bg-white p-6 shadow-md transition-all hover:shadow-lg dark:shadow-lg ${
+                inView ? `animate-fadeInUp` : "opacity-0"
               }`}
             >
               <div className="mb-4 flex items-center">
                 <span className="mr-3 text-3xl">{item.icon}</span>
-                <h3 className="text-xl font-bold text-primary-700 dark:text-primary-400">
+                <h3 className="text-primary-700 dark:text-primary-400 text-xl font-bold">
                   {item.title}
                 </h3>
               </div>
-              <p className="text-base text-secondary-600 dark:text-secondary-300">
+              <p className="text-secondary-600 dark:text-secondary-300 text-base">
                 {item.description}
               </p>
             </div>

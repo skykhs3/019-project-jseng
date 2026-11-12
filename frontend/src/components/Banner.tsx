@@ -60,7 +60,7 @@ const Banner: React.FC = () => {
           loop={true}
           preload="auto"
           poster="/image_banner1_poster.webp"
-          className={`absolute z-0 h-full w-full animate-withBannerWidthExpand object-cover transition-opacity duration-[2000ms] ease-in translate-z-0 ${isVideo1Visible ? "opacity-100" : "opacity-0"}`}
+          className={`animate-withBannerWidthExpand absolute z-0 h-full w-full translate-z-0 object-cover transition-opacity duration-[2000ms] ease-in ${isVideo1Visible ? "opacity-100" : "opacity-0"}`}
         >
           <source src="/video_banner1_tiny.mp4" type="video/mp4" />
         </video>
@@ -72,7 +72,7 @@ const Banner: React.FC = () => {
           playsInline={true}
           preload="auto"
           poster="/image_banner2_poster.webp"
-          className={`absolute z-0 h-full w-full object-cover transition-opacity duration-[2000ms] ease-in translate-z-0 ${isVideo1Visible ? "opacity-0" : "opacity-100"}`}
+          className={`absolute z-0 h-full w-full translate-z-0 object-cover transition-opacity duration-[2000ms] ease-in ${isVideo1Visible ? "opacity-0" : "opacity-100"}`}
           style={{ transform: "translateZ(0)" }}
         >
           <source src="/video_banner2_tiny.mp4" type="video/mp4" />
@@ -87,12 +87,13 @@ const Banner: React.FC = () => {
               className={`text-center text-2xl font-bold text-white md:text-3xl lg:text-4xl ${isText1Animated ? "animate-fadeInUp" : "collapse"}`}
               style={textShadowStyle}
             >
-              건설분쟁 기술자문<br />
+              건설분쟁 기술자문
+              <br />
               (주)정석기술연구소
             </p>
             <div className="h-6 md:h-7 lg:h-8"></div>
             <p
-              className={`break-keep text-center text-3xl font-bold leading-tight text-white md:text-[50px] lg:text-6xl ${isText2Animated ? "animate-fadeInUp" : "collapse"}`}
+              className={`text-center text-3xl leading-tight font-bold break-keep text-white md:text-[50px] lg:text-6xl ${isText2Animated ? "animate-fadeInUp" : "collapse"}`}
               style={textShadowStyle}
             >
               최고의 <span className="text-primary-300">건축시공기술사</span>와{" "}
@@ -105,7 +106,7 @@ const Banner: React.FC = () => {
       {/* 스크롤 다운 버튼 */}
       <div className="absolute bottom-0 z-[2] flex w-full justify-center">
         <button
-          className="absolute bottom-10 z-10 mx-auto animate-withArrowSlideUpDown"
+          className="animate-withArrowSlideUpDown absolute bottom-10 z-10 mx-auto"
           onClick={() => {
             const element = document.getElementById("회사개요");
             if (element) {
