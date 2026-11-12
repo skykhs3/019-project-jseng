@@ -9,15 +9,15 @@ const Header: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "#회사소개", label: "회사 소개" },
-    { href: "#주요업무", label: "주요 업무" },
+    { href: "#회사개요", label: "회사 개요" },
+    { href: "#주요수행분야", label: "주요 수행 분야" },
     { href: "#회사소식", label: "회사 소식" },
     { href: "#조직도", label: "조직도" },
     { href: "#찾아오시는길", label: "찾아오시는 길" },
   ];
 
   const handleScroll = useCallback(() => {
-    const secondPage = document.getElementById("회사소개");
+    const secondPage = document.getElementById("회사개요");
     if (secondPage) {
       const isScrollPositionReachSecondPageTop =
         0 >= secondPage.getBoundingClientRect().top;
@@ -45,7 +45,7 @@ const Header: React.FC = () => {
       handleScroll();
     }
     if (isMobileMenuOpen) {
-      const secondPage = document.getElementById("회사소개");
+      const secondPage = document.getElementById("회사개요");
       if (secondPage) {
         const isScrollPositionTop = window.scrollY === 0;
         if (isScrollPositionTop) {

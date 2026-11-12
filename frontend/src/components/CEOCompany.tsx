@@ -9,6 +9,11 @@ import "slick-carousel/slick/slick-theme.css";
 
 const images = [
   {
+    imageUrl: "/image_horizontal7.jpeg",
+    description: "호반그룹 건설 분쟁 대응 방안 강연",
+    image_position: "object-[center_right]",
+  },
+  {
     imageUrl: "/image_horizontal1.jpeg",
     description: "(주)KCC건설 소장 및 팀장 대상 하자분쟁 대응 방안 교육 연사",
     image_position: "object-center",
@@ -25,19 +30,8 @@ const images = [
     image_position: "object-right",
   },
   {
-    imageUrl: "/image_horizontal3.png",
-    description:
-      "LH 한국토지주택공사 주택 품질·분쟁 관리 전문가 초청 강연 연사",
-    image_position: "object-bottom",
-  },
-  {
     imageUrl: "/image_horizontal6.jpeg",
     description: "1군 건설사 CS협의체 하자 소송 대응 방안 강연 연사",
-    image_position: "object-[center_right]",
-  },
-  {
-    imageUrl: "/image_horizontal7.jpeg",
-    description: "호반그룹 건설 분쟁 대응 방안 강연",
     image_position: "object-[center_right]",
   },
   {
